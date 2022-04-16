@@ -4,7 +4,8 @@ using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 
-public class BallAgent : Agent {
+public class BallAgent : Agent
+{
     public Transform Target;
     public float forceMultiplier = 10;
     bool boom;
@@ -33,55 +34,91 @@ public class BallAgent : Agent {
     public Transform w10;
     public Transform w11;
     public Transform w12;
-    void Start() {
+    public Transform[] walls = new Transform[12];
+    public Transform[] spawns = new Transform[12];
+    void Start()
+    {
         rBody = GetComponent<Rigidbody>();
+        walls[0] = w1;
+        walls[1] = w2;
+        walls[2] = w3;
+        walls[3] = w4;
+        walls[4] = w5;
+        walls[5] = w6;
+        walls[6] = w7;
+        walls[7] = w8;
+        walls[8] = w9;
+        walls[9] = w10;
+        walls[10] = w11;
+        walls[11] = w12;
+        spawns[0] = s1;
+        spawns[1] = s2;
+        spawns[2] = s3;
+        spawns[3] = s4;
+        spawns[4] = s5;
+        spawns[5] = s6;
+        spawns[6] = s7;
+        spawns[7] = s8;
+        spawns[8] = s9;
+        spawns[9] = s10;
+        spawns[10] = s11;
+        spawns[11] = s12;
     }
 
-    public override void OnEpisodeBegin() {
+    public override void OnEpisodeBegin()
+    {
         int spawn = Random.Range(1, 7);
         // If the Agent fell, zero its momentum
-        if(this.transform.localPosition.y < 0) {
-            this.rBody.angularVelocity = Vector3.zero;
-            this.rBody.velocity = Vector3.zero;
-            if(spawn == 1)
-                this.transform.localPosition = s5.localPosition;
-            else if(spawn == 2)
-                this.transform.localPosition = s1.localPosition;
-            else if(spawn == 3)
-                this.transform.localPosition = s2.localPosition;
-            else
-                this.transform.localPosition = new Vector3(0, 0.5f, 0);
-        }
+        //if(this.transform.localPosition.y < 0) {
+        //    this.rBody.angularVelocity = Vector3.zero;
+        //    this.rBody.velocity = Vector3.zero;
+        //    //if(spawn == 1)
+        //    //    this.transform.localPosition = s5.localPosition;
+        //    //else if(spawn == 2)
+        //    //    this.transform.localPosition = s1.localPosition;
+        //    //else if(spawn == 3)
+        //    //    this.transform.localPosition = s2.localPosition;
+        //    //else
+        //    //    this.transform.localPosition = new Vector3(0, 0.5f, 0);
+        //    ResetSpawn();
+        //}
+        //else
+        //{
+        //    ResetSpawn();
+        //}
+
+        ResetSpawn();
 
         // Move the target to a new spot
         spawn = Random.Range(1, 12);
-        if(spawn == 1)
+        if (spawn == 1)
             Target.localPosition = s1.localPosition;
-        if(spawn == 2)
+        if (spawn == 2)
             Target.localPosition = s2.localPosition;
-        if(spawn == 3)
+        if (spawn == 3)
             Target.localPosition = s3.localPosition;
-        if(spawn == 4)
+        if (spawn == 4)
             Target.localPosition = s4.localPosition;
-        if(spawn == 5)
+        if (spawn == 5)
             Target.localPosition = s5.localPosition;
-        if(spawn == 6)
+        if (spawn == 6)
             Target.localPosition = s6.localPosition;
-        if(spawn == 7)
+        if (spawn == 7)
             Target.localPosition = s7.localPosition;
-        if(spawn == 8)
+        if (spawn == 8)
             Target.localPosition = s8.localPosition;
-        if(spawn == 9)
+        if (spawn == 9)
             Target.localPosition = s9.localPosition;
-        if(spawn == 10)
+        if (spawn == 10)
             Target.localPosition = s10.localPosition;
-        if(spawn == 11)
+        if (spawn == 11)
             Target.localPosition = s11.localPosition;
-        if(spawn == 12)
+        if (spawn == 12)
             Target.localPosition = s12.localPosition;
     }
 
-    public override void CollectObservations(VectorSensor sensor) {
+    public override void CollectObservations(VectorSensor sensor)
+    {
         // Target and Agent positions
         sensor.AddObservation(Target.localPosition);
         sensor.AddObservation(this.transform.localPosition);
@@ -103,7 +140,8 @@ public class BallAgent : Agent {
         sensor.AddObservation(rBody.velocity.z);
     }
 
-    public override void OnActionReceived(ActionBuffers actionBuffers) {
+    public override void OnActionReceived(ActionBuffers actionBuffers)
+    {
         // Actions, size = 2
         Vector3 controlSignal = Vector3.zero;
         controlSignal.x = actionBuffers.ContinuousActions[0];
@@ -126,20 +164,41 @@ public class BallAgent : Agent {
         //float dtw12 = Vector3.Distance(this.transform.localPosition, w1.localPosition);
 
         // Reached target
-        if(distanceToTarget < 1.42f) {
+        if (distanceToTarget < 1.42f)
+        {
             SetReward(1.0f);
             EndEpisode();
         }
 
         // Fell off platform
-        else if(this.transform.localPosition.y < 0) {
+        else if (this.transform.localPosition.y < 0)
+        {
             EndEpisode();
         }
     }
 
-    //public override void Heuristic(in ActionBuffers actionsOut) {
-    //    var continuousActionsOut = actionsOut.ContinuousActions;
-    //    continuousActionsOut[0] = Input.GetAxis("Horizontal");
-    //    continuousActionsOut[1] = Input.GetAxis("Vertical");
-    //}
+    public override void Heuristic(in ActionBuffers actionsOut)
+    {
+        var continuousActionsOut = actionsOut.ContinuousActions;
+        continuousActionsOut[0] = Input.GetAxis("Horizontal");
+        continuousActionsOut[1] = Input.GetAxis("Vertical");
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Finish"))
+        {
+            //Debug.Log("Touched wall");
+            AddReward(-0.2f);
+            EndEpisode();
+        }
+    }
+
+    private void ResetSpawn()
+    {
+        this.rBody.angularVelocity = Vector3.zero;
+        this.rBody.velocity = Vector3.zero;
+        int spawn = Random.Range(0, 11);
+        this.transform.localPosition = spawns[spawn].localPosition;
+    }
 }
