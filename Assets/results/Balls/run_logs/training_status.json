@@ -1,0 +1,65 @@
+{
+    "Balls": {
+        "checkpoints": [
+            {
+                "steps": 21999986,
+                "file_path": "results\\Balls\\Balls\\Balls-21999986.onnx",
+                "reward": 0.38293899281077015,
+                "creation_time": 1650271180.9207108,
+                "auxillary_file_paths": [
+                    "results\\Balls\\Balls\\Balls-21999986.pt"
+                ]
+            },
+            {
+                "steps": 22499870,
+                "file_path": "results\\Balls\\Balls\\Balls-22499870.onnx",
+                "reward": 0.1007136070245021,
+                "creation_time": 1650271622.7071605,
+                "auxillary_file_paths": [
+                    "results\\Balls\\Balls\\Balls-22499870.pt"
+                ]
+            },
+            {
+                "steps": 22999835,
+                "file_path": "results\\Balls\\Balls\\Balls-22999835.onnx",
+                "reward": 0.42004188014113386,
+                "creation_time": 1650272066.5246773,
+                "auxillary_file_paths": [
+                    "results\\Balls\\Balls\\Balls-22999835.pt"
+                ]
+            },
+            {
+                "steps": 23499977,
+                "file_path": "results\\Balls\\Balls\\Balls-23499977.onnx",
+                "reward": -0.012153342298176734,
+                "creation_time": 1650272499.9936771,
+                "auxillary_file_paths": [
+                    "results\\Balls\\Balls\\Balls-23499977.pt"
+                ]
+            },
+            {
+                "steps": 23544878,
+                "file_path": "results\\Balls\\Balls\\Balls-23544878.onnx",
+                "reward": null,
+                "creation_time": 1650272540.2346854,
+                "auxillary_file_paths": [
+                    "results\\Balls\\Balls\\Balls-23544878.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 23544878,
+            "file_path": "results\\Balls\\Balls.onnx",
+            "reward": null,
+            "creation_time": 1650272540.2346854,
+            "auxillary_file_paths": [
+                "results\\Balls\\Balls\\Balls-23544878.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.28.0",
+        "torch_version": "1.7.1+cu110"
+    }
+}

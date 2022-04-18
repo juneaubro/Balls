@@ -19,6 +19,12 @@ behaviors:
       extrinsic:
         gamma: 0.995
         strength: 1.0
+      gail:
+        strength: 0.9
+        demo_path: ..\Demos\BallAgentDemo.demo
+    behavioral_cloning:
+        strength: 0.9
+        demo_path: ..\Demos\BallAgentDemo.demo
     keep_checkpoints: 5
     max_steps: 100000000
     time_horizon: 1000
